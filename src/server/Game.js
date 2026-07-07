@@ -10,6 +10,7 @@ const SCORE_TABLE = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
 const PIECE_TO_GENERATE = 50;
 const DEFAULT_TICK_MS = 800;
+const MAX_PAYERS = 5;
 
 class Game extends EventEmitter {
   constructor(room, options = {}) {
@@ -32,6 +33,9 @@ class Game extends EventEmitter {
   }
 
   addPlayer(id, name) {
+    if (this.players.size >= MAX_PAYERS) {
+      throw new RoomStateError(`Room "${this.room}" is full, cannot join`);
+    }
     if (this.status !== 'waiting') {
       throw new RoomStateError(`Room "${this.room}" already started, cannot join until next round`);
     }

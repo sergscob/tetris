@@ -3,7 +3,7 @@ import { MOVE, ROTATE, SOFT_DROP, HARD_DROP, gameStarted, gameTick, gameOver } f
 import { leaderboardReceived } from '../actions/leaderboard';
 
 
-const OUTGOING_EVENTS = {
+const OUT_EVENTS = {
   [JOIN_ROOM]: action => ['room:join', { room: action.room, playerName: action.playerName, mode: action.mode }],
   [START_GAME]: action => ['game:start', { mode: action.mode }],
   [MOVE]: action => ['input:move', { dir: action.dir }],
@@ -22,7 +22,7 @@ const createSocketMiddleware = (socket) => (store) => {
   socket.on('leaderboard:top', (entries) => store.dispatch(leaderboardReceived(entries)));
 
   return (next) => (action) => {
-    const toEvent = OUTGOING_EVENTS[action.type]
+    const toEvent = OUT_EVENTS[action.type]
     if (toEvent) {
       const [event, payload] = toEvent(action)
       socket.emit(event, payload)
