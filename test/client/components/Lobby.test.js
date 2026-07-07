@@ -22,7 +22,7 @@ describe('client/components/Lobby', () => {
       error: null,
       winnerId: null,
     });
-    expect(getByText(/Waiting for the host/)).to.exist;
+    expect(getByText(/WAITING/)).to.exist;
     expect(queryByText('Start game')).to.equal(null);
   });
 

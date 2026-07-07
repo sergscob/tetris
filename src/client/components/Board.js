@@ -5,8 +5,8 @@ import { buildDisplayGrid, GHOST_PREFIX } from '../game/renderBoard'
 const CELL_SIZE = 22
 
 const cellStyle = cell => {
-  if (cell === null) 
-    return { backgroundColor: 'transparent' }
+  if (cell === null)
+    return {}
   if (cell === 'P') 
     return { backgroundColor: '#4b5563' }
 

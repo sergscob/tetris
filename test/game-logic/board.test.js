@@ -6,14 +6,15 @@ import {
 import { createPiece } from '../../src/game-logic/pieces';
 
 describe('game-logic/board', () => {
-  it('creates an empty board of the right dimensions', () => {
+  it('creates an empty board', () => {
     const board = createBoard();
     expect(board).to.have.lengthOf(BOARD_HEIGHT);
     expect(board[0]).to.have.lengthOf(BOARD_WIDTH);
     expect(board.every((row) => row.every((cell) => cell === null))).to.equal(true);
   });
 
-  it('isCellFree treats above-board rows as free and out-of-bounds columns as blocked', () => {
+
+  it('isCellFree: rows above the board are TRUE and outer columns are TRUE', () => {
     const board = createBoard();
     expect(isCellFree(board, 0, -1)).to.equal(true);
     expect(isCellFree(board, -1, 0)).to.equal(false);
@@ -21,7 +22,8 @@ describe('game-logic/board', () => {
     expect(isCellFree(board, 0, BOARD_HEIGHT)).to.equal(false);
   });
 
-  it('canPlacePiece is true on an empty board and false once occupied', () => {
+
+  it('canPlacePiece is true on empty board and false quand occupied', () => {
     const board = createBoard();
     const piece = createPiece('O', { x: 4, y: 0 });
     expect(canPlacePiece(board, piece)).to.equal(true);
@@ -30,7 +32,7 @@ describe('game-logic/board', () => {
     expect(canPlacePiece(merged, piece)).to.equal(false);
   });
 
-  it('mergePieceIntoBoard does not mutate the original board', () => {
+  it('mergePieceIntoBoard does not change the original board', () => {
     const board = createBoard();
     const piece = createPiece('O', { x: 4, y: 0 });
     const merged = mergePieceIntoBoard(board, piece);
@@ -44,7 +46,8 @@ describe('game-logic/board', () => {
     expect(() => mergePieceIntoBoard(board, piece)).to.not.throw();
   });
 
-  it('clearFullLines removes complete rows and pads with empty rows on top', () => {
+
+  it('clearFullLines remove complete rows and place empty rows on top', () => {
     const board = createBoard(4, 3);
     board[2] = ['I', 'I', 'I', 'I'];
     const { board: next, linesCleared } = clearFullLines(board);
@@ -53,12 +56,14 @@ describe('game-logic/board', () => {
     expect(next[0].every((cell) => cell === null)).to.equal(true);
   });
 
-  it('clearFullLines is a no-op when no line is full', () => {
+
+  it('clearFullLines when no line is full', () => {
     const board = createBoard(4, 3);
     const { board: next, linesCleared } = clearFullLines(board);
     expect(linesCleared).to.equal(0);
     expect(next).to.deep.equal(board);
   });
+
 
   it('addPenaltyLines pushes indestructible rows to the bottom', () => {
     const board = createBoard(4, 3);
@@ -67,13 +72,14 @@ describe('game-logic/board', () => {
     expect(withPenalty[2].every((cell) => cell === 'P')).to.equal(true);
   });
 
-  it('addPenaltyLines with 0 or negative count returns the same board', () => {
+  it('addPenaltyLines(0) or (-3) returns the same board', () => {
     const board = createBoard(4, 3);
     expect(addPenaltyLines(board, 0)).to.equal(board);
     expect(addPenaltyLines(board, -3)).to.equal(board);
   });
 
-  it('isBoardOverflowing detects a blocked top row', () => {
+
+  it('isBoardOverflowing detect a blocked top row', () => {
     const board = createBoard(4, 3);
     expect(isBoardOverflowing(board)).to.equal(false);
     board[0][0] = 'I';
