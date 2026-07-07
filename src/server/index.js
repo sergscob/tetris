@@ -41,7 +41,6 @@ const buildTickPayload = (game, player, playerId) => {
 }
 
 const emitPlayerUpdate = (io, game, playerId) => {
-  console.log(`Emitting game:tick to ${playerId}`)
   const player = game.players.get(playerId)
   if (!player) 
     return

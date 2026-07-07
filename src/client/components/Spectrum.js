@@ -8,7 +8,6 @@ const Spectrum = ({ name, alive, score, spectrum }) => (
     </div>
     <div className="spectrum-bars">
       {spectrum.map((height, x) => (
-        // eslint-disable-next-line react/no-array-index-key
         <div key={x} className="spectrum-bar" style={{ height: `${height * 4}px` }} />
       ))}
     </div>

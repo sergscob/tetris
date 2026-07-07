@@ -8,8 +8,8 @@
   "scripts": {
     "srv-dev": "BABEL_ENV=node DEBUG=tetris:* nodemon --watch src/server --watch src/game-logic --exec \"node -r @babel/register\" src/server/main.js",
     "client-dev": "webpack-dev-server --open",
-    "srv-dist": "BABEL_ENV=node babel src/server src/game-logic --out-dir dist --copy-files --ignore \"**/*.test.js\"",
-    "client-dist": "NODE_ENV=production webpack",
+    "srv-build": "BABEL_ENV=node babel src/server src/game-logic --out-dir dist --copy-files --ignore \"**/*.test.js\"",
+    "client-build": "NODE_ENV=production webpack",
     "start": "DEBUG=tetris:* node dist/server/main.js",
     "test": "NODE_ENV=test mocha --require @babel/register --require test/setup.js \"test/**/*.test.js\" --reporter spec --exit",
     "coverage": "NODE_ENV=test nyc --reporter=text --reporter=lcov npm test"
