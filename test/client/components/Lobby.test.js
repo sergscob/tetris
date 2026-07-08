@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import {
+  render, cleanup, fireEvent,
+} from '@testing-library/react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Lobby from '../../../src/client/components/Lobby';
@@ -26,8 +28,8 @@ describe('client/components/Lobby', () => {
     expect(queryByText('Start game')).to.equal(null);
   });
 
-  it('shows mode options and a start button for the host', () => {
-    const { getByText } = renderWithStore({
+  it('shows a start button for the host with mode options hidden by default', () => {
+    const { getByText, queryByText } = renderWithStore({
       selfId: 'p1',
       hostId: 'p1',
       players: [{ id: 'p1', name: 'alice' }],
@@ -35,6 +37,18 @@ describe('client/components/Lobby', () => {
       winnerId: null,
     });
     expect(getByText('Start game')).to.exist;
+    expect(queryByText('Invisible pieces')).to.equal(null);
+  });
+
+  it('reveals mode options for the host once bonus mode is toggled on', () => {
+    const { getByText, getByLabelText } = renderWithStore({
+      selfId: 'p1',
+      hostId: 'p1',
+      players: [{ id: 'p1', name: 'alice' }],
+      error: null,
+      winnerId: null,
+    });
+    fireEvent.click(getByLabelText('Bonus mode'));
     expect(getByText('Invisible pieces')).to.exist;
   });
 
@@ -50,13 +64,24 @@ describe('client/components/Lobby', () => {
     expect(getByText('alice won the last round!')).to.exist;
   });
 
-  it('shows the leaderboard once scores have been recorded', () => {
-    const { getByText } = renderWithStore(
+  it('hides the leaderboard by default even when scores have been recorded', () => {
+    const { queryByText } = renderWithStore(
       {
         selfId: 'p1', hostId: 'p1', players: [{ id: 'p1', name: 'alice' }], error: null, winnerId: null,
       },
       [{ name: 'alice', score: 900, date: '2026-01-01' }],
     );
+    expect(queryByText('alice — 900')).to.equal(null);
+  });
+
+  it('shows the leaderboard once bonus mode is toggled on', () => {
+    const { getByText, getByLabelText } = renderWithStore(
+      {
+        selfId: 'p1', hostId: 'p1', players: [{ id: 'p1', name: 'alice' }], error: null, winnerId: null,
+      },
+      [{ name: 'alice', score: 900, date: '2026-01-01' }],
+    );
+    fireEvent.click(getByLabelText('Bonus mode'));
     expect(getByText('alice — 900')).to.exist;
   });
 });
