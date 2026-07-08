@@ -4,7 +4,7 @@
 
 ## Description
 
-The goal of this project is to develop a real-time multiplayer version of the classic Tetris game as a full-stack JavaScript web application. The project focuses on client-server communication, real-time synchronization, and state management while respecting the architectural constraints of the 42 Red Tetris subject. The application allows two players to compete simultaneously, with the game state synchronized through WebSockets to provide a responsive multiplayer experience. :contentReference[oaicite:0]{index=0}
+The goal of this project is to develop a real-time multiplayer version of the classic Tetris game as a full-stack JavaScript web application. The project focuses on client-server communication, real-time synchronization, and state management while respecting the architectural constraints of the 42 Red Tetris subject. The application allows two players to compete simultaneously, with the game state synchronized through WebSockets to provide a responsive multiplayer experience.
 
 ### Features
 
