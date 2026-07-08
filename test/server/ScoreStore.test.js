@@ -17,11 +17,9 @@ describe('server/ScoreStore', () => {
     fs.rmSync(path.dirname(filePath), { recursive: true, force: true });
   });
 
-  it('returns an empty list before anything was recorded', () => {
+  it('returns an empty list before anything was recorded, then persists scores across instances', () => {
     expect(store.top()).to.deep.equal([]);
-  });
 
-  it('persists recorded scores to disk across instances', () => {
     store.record('alice', 300);
     const reopened = new ScoreStore(filePath);
     expect(reopened.top()).to.have.lengthOf(1);

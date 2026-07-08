@@ -10,6 +10,10 @@ describe('server/Player', () => {
     expect(player.piece).to.equal(null);
     expect(player.board).to.have.lengthOf(BOARD_HEIGHT);
     expect(player.board[0]).to.have.lengthOf(BOARD_WIDTH);
+
+    expect(player.toJSON()).to.deep.equal({
+      id: 'id1', name: 'alice', isHost: false, alive: true, score: 0,
+    });
   });
 
   it('reset clears score, piece progress and revives the player', () => {
@@ -21,13 +25,5 @@ describe('server/Player', () => {
     expect(player.score).to.equal(0);
     expect(player.pieceIndex).to.equal(0);
     expect(player.alive).to.equal(true);
-  });
-
-  it('toJSON exposes only public fields, not the board', () => {
-    const player = new Player('id1', 'alice');
-    const json = player.toJSON();
-    expect(json).to.deep.equal({
-      id: 'id1', name: 'alice', isHost: false, alive: true, score: 0,
-    });
   });
 });

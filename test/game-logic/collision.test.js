@@ -10,43 +10,33 @@ describe('game-logic/collision', () => {
     const piece = createPiece('O', { x: 4, y: 0 });
     expect(canMove(board, piece, -1, 0)).to.equal(true);
     expect(canMove(board, piece, -10, 0)).to.equal(false);
-  });
 
+    const origin = createPiece('O', { x: 0, y: 0 });
+    const blocked = moveIfPossible(board, origin, -1, 0);
+    expect(blocked).to.deep.equal(origin);
 
-  it('moveIfPossible move when valid and stay put when blocked', () => {
-    const board = createBoard();
-    const piece = createPiece('O', { x: 0, y: 0 });
-    const blocked = moveIfPossible(board, piece, -1, 0);
-    expect(blocked).to.deep.equal(piece);
-
-    const moved = moveIfPossible(board, piece, 1, 0);
+    const moved = moveIfPossible(board, origin, 1, 0);
     expect(moved.x).to.equal(1);
   });
-
 
   it('tryRotate rotate when space allows', () => {
     const board = createBoard();
     const piece = createPiece('T', { x: 4, y: 5 });
     const rotated = tryRotate(board, piece);
     expect(rotated.rotation).to.equal(1);
-  });
 
-  it('tryRotate move away from the wall', () => {
-    const board = createBoard();
-    const piece = createPiece('I', { x: 0, y: 5, rotation: 0 });
-    const rotated = tryRotate(board, piece);
-    expect(rotated.rotation).to.equal(1);
-    expect(rotated.x).to.be.at.least(0);
-  });
+    const nearWall = createPiece('I', { x: 0, y: 5, rotation: 0 });
+    const kicked = tryRotate(board, nearWall);
+    expect(kicked.rotation).to.equal(1);
+    expect(kicked.x).to.be.at.least(0);
 
-  it('tryRotate returns the original piece when no kick offset works', () => {
     const solidBoard = createBoard(4, 20).map((row) => row.map(() => 'I'));
-    const piece = createPiece('I', { x: 0, y: 5, rotation: 0 });
-    const rotated = tryRotate(solidBoard, piece);
-    expect(rotated).to.deep.equal(piece);
+    const stuck = createPiece('I', { x: 0, y: 5, rotation: 0 });
+    const notRotated = tryRotate(solidBoard, stuck);
+    expect(notRotated).to.deep.equal(stuck);
   });
 
-  it('hardDropY stops right above the floor', () => {
+  it('hardDropY stops right above the floor or on top of the pile', () => {
     const board = createBoard();
     const piece = createPiece('O', { x: 4, y: 0 });
     const y = hardDropY(board, piece);
@@ -54,14 +44,10 @@ describe('game-logic/collision', () => {
 
     expect(dropped.y).to.equal(piece.y + y);
     expect(canMove(board, dropped, 0, 1)).to.equal(false);
-  });
 
-  it('hardDropY stops on top of the pile', () => {
-    let board = createBoard();
-    board = mergePieceIntoBoard(board, createPiece('O', { x: 4, y: 18 }));
-    const piece = createPiece('O', { x: 4, y: 0 });
-    const dropped = hardDropPiece(board, piece);
-    expect(dropped.y).to.equal(16);
+    const stackedBoard = mergePieceIntoBoard(createBoard(), createPiece('O', { x: 4, y: 18 }));
+    const droppedOnPile = hardDropPiece(stackedBoard, createPiece('O', { x: 4, y: 0 }));
+    expect(droppedOnPile.y).to.equal(16);
   });
 
 

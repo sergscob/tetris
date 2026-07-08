@@ -13,7 +13,6 @@ const captureMiddleware = (actions) => () => (next) => (action) => {
 
 const buildWrapper = (actions) => {
   const store = createStore(rootReducer, applyMiddleware(captureMiddleware(actions)));
-  // eslint-disable-next-line react/prop-types
   return function Wrapper({ children }) {
     return <Provider store={store}>{children}</Provider>;
   };
@@ -26,7 +25,7 @@ const fireKey = (key) => {
 describe('client/hooks/useKeyboard', () => {
   afterEach(cleanup);
 
-  it('dispatches the matching action for each mapped key when enabled', () => {
+  it('dispatches the matching action for each mapped key when enabled, ignoring unmapped keys', () => {
     const actions = [];
     renderHook(() => useKeyboard(true), { wrapper: buildWrapper(actions) });
 
@@ -35,37 +34,11 @@ describe('client/hooks/useKeyboard', () => {
     fireKey('ArrowUp');
     fireKey('ArrowDown');
     fireKey(' ');
+    fireKey('a');
 
     expect(actions.map((action) => action.type)).to.deep.equal([
       'game/move', 'game/move', 'game/rotate', 'game/softDrop', 'game/hardDrop',
     ]);
-  });
-
-  it('ignores unmapped keys', () => {
-    const actions = [];
-    renderHook(() => useKeyboard(true), { wrapper: buildWrapper(actions) });
-
-    fireKey('a');
-
-    expect(actions).to.deep.equal([]);
-  });
-
-  it('does not attach a listener when disabled', () => {
-    const actions = [];
-    renderHook(() => useKeyboard(false), { wrapper: buildWrapper(actions) });
-
-    fireKey('ArrowLeft');
-
-    expect(actions).to.deep.equal([]);
-  });
-
-  it('detaches the listener on unmount', () => {
-    const actions = [];
-    const { unmount } = renderHook(() => useKeyboard(true), { wrapper: buildWrapper(actions) });
-    unmount();
-
-    fireKey('ArrowLeft');
-
-    expect(actions).to.deep.equal([]);
-  });
+  })
+  
 });

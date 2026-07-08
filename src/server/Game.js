@@ -50,32 +50,33 @@ class Game extends EventEmitter {
   }
 
   removePlayer(id) {
-    if (!this.players.has(id)) return;
-    const wasHost = this.hostId === id;
-    this.players.delete(id);
+    if (!this.players.has(id)) 
+      return
+    const wasHost = this.hostId === id
+    this.players.delete(id)
 
     if (this.players.size === 0) {
-      this.stop();
-      return;
+      this.stop()
+      return
     }
 
     if (wasHost) {
-      const [nextHostId, nextHost] = this.players.entries().next().value;
-      nextHost.isHost = true;
-      this.hostId = nextHostId;
+      const [nextHostId, nextHost] = this.players.entries().next().value
+      nextHost.isHost = true
+      this.hostId = nextHostId
     }
 
     if (this.status === 'playing') 
-      this.checkWinCondition();
-    this.emit('state');
+      this.checkWinCondition()
+    this.emit('state')
   }
 
   start(requesterId, modeOverrides = {}) {
     if (requesterId !== this.hostId) {
-      throw new RoomStateError('Only the host can start the game');
+      throw new RoomStateError('Only the host can start the game')
     }
     if (this.status !== 'waiting') {
-      throw new RoomStateError(`Room "${this.room}" already started`);
+      throw new RoomStateError(`Room "${this.room}" already started`)
     }
     
     this.invisible = modeOverrides.invisible ?? this.invisible,

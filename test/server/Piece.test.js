@@ -7,6 +7,11 @@ describe('server/Piece', () => {
     const piece = new Piece('T');
     expect(piece.type).to.equal('T');
     expect(piece.cells()).to.have.lengthOf(4);
+
+    const placed = new Piece('L', { x: 2, y: -2 });
+    expect(placed.toJSON()).to.deep.equal({
+      type: 'L', rotation: 0, x: 2, y: -2,
+    });
   });
 
   it('move mutates internal state only when the move is legal', () => {
@@ -31,20 +36,11 @@ describe('server/Piece', () => {
     const piece = new Piece('O', { x: 4, y: 0 });
     piece.hardDrop(board);
     expect(piece.state.y).to.equal(16);
-  });
 
-  it('isResting reports whether the piece can still fall', () => {
-    const board = createBoard();
-    const piece = new Piece('O', { x: 4, y: 0 });
-    expect(piece.isResting(board)).to.equal(false);
-    piece.hardDrop(board);
-    expect(piece.isResting(board)).to.equal(true);
-  });
-
-  it('toJSON exposes only the serializable state', () => {
-    const piece = new Piece('L', { x: 2, y: -2 });
-    expect(piece.toJSON()).to.deep.equal({
-      type: 'L', rotation: 0, x: 2, y: -2,
-    });
+    const openBoard = createBoard();
+    const falling = new Piece('O', { x: 4, y: 0 });
+    expect(falling.isResting(openBoard)).to.equal(false);
+    falling.hardDrop(openBoard);
+    expect(falling.isResting(openBoard)).to.equal(true);
   });
 });

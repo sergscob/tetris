@@ -4,9 +4,9 @@ import { render, cleanup } from '@testing-library/react';
 import PlayerList from '../../../src/client/components/PlayerList';
 
 describe('client/components/PlayerList', () => {
-  afterEach(cleanup);
+  afterEach(cleanup)
 
-  it('lists every player and marks the host and eliminated players', () => {
+  it('lists every player', () => {
     const players = [
       { id: 'p1', name: 'alice', alive: true },
       { id: 'p2', name: 'bob', alive: false },
@@ -14,11 +14,8 @@ describe('client/components/PlayerList', () => {
     const { getByText } = render(<PlayerList players={players} hostId="p1" />);
     expect(getByText('alice (host)')).to.exist;
     expect(getByText('bob (out)')).to.exist;
-  });
 
-  it('renders nothing extra when there is no host yet', () => {
-    const players = [{ id: 'p1', name: 'alice', alive: true }];
-    const { getByText } = render(<PlayerList players={players} />);
-    expect(getByText('alice')).to.exist;
+    const noHost = render(<PlayerList players={[{ id: 'p1', name: 'alice', alive: true }]} />);
+    expect(noHost.getByText('alice')).to.exist;
   });
 });

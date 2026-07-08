@@ -12,14 +12,9 @@ describe('server/RoomManager', () => {
     expect(second.isNewGame).to.equal(false);
     expect(second.game).to.equal(first.game);
     expect(manager.getGame('room1').players.size).to.equal(2);
-  });
 
-  it('keeps concurrent rooms isolated from each other', () => {
-    const manager = new RoomManager();
-    manager.join('room1', 'p1', 'alice');
-    manager.join('room2', 'p2', 'bob');
-
-    expect(manager.getGame('room1').players.has('p2')).to.equal(false);
+    manager.join('room2', 'p3', 'carol');
+    expect(manager.getGame('room1').players.has('p3')).to.equal(false);
     expect(manager.getGame('room2').players.has('p1')).to.equal(false);
   });
 
@@ -28,6 +23,8 @@ describe('server/RoomManager', () => {
     manager.join('room1', 'p1', 'alice');
     manager.leave('room1', 'p1');
     expect(manager.getGame('room1')).to.equal(undefined);
+
+    expect(() => manager.leave('ghost', 'p1')).to.not.throw();
   });
 
   it('findRoomOf locates which room a player belongs to', () => {
@@ -35,11 +32,6 @@ describe('server/RoomManager', () => {
     manager.join('room1', 'p1', 'alice');
     expect(manager.findRoomOf('p1')).to.equal('room1');
     expect(manager.findRoomOf('unknown')).to.equal(null);
-  });
-
-  it('leave is a no-op for a room that does not exist', () => {
-    const manager = new RoomManager();
-    expect(() => manager.leave('ghost', 'p1')).to.not.throw();
   });
 
   it('propagates errors from Game (e.g. joining after start)', () => {

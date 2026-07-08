@@ -13,11 +13,24 @@ const renderWithStore = (gameState) => {
 };
 
 describe('client/components/GameView', () => {
-  afterEach(cleanup);
+  afterEach(cleanup)
 
-  it('shows a starting placeholder before the first tick arrives', () => {
+
+  it('starting placeholder', () => {
     const { getByText } = renderWithStore({ board: null, opponents: [] });
     expect(getByText('Starting...')).to.exist;
+
+    const board = createBoard(2, 1);
+    const eliminated = renderWithStore({
+      board,
+      piece: null,
+      hidePiece: false,
+      score: 0,
+      alive: false,
+      next: null,
+      opponents: [],
+    });
+    expect(eliminated.getByText(/View mode until the round ends/)).to.exist;
   });
 
   it('renders the board, score, next piece and opponents once ticking', () => {
@@ -37,19 +50,5 @@ describe('client/components/GameView', () => {
     expect(getByText('Next: I')).to.exist;
     expect(container.querySelectorAll('.board-cell')).to.have.lengthOf(8);
     expect(getByText('bob')).to.exist;
-  });
-
-  it('shows a spectating notice once eliminated', () => {
-    const board = createBoard(2, 1);
-    const { getByText } = renderWithStore({
-      board,
-      piece: null,
-      hidePiece: false,
-      score: 0,
-      alive: false,
-      next: null,
-      opponents: [],
-    });
-    expect(getByText(/View mode until the round ends/)).to.exist;
   });
 });
