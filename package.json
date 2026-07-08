@@ -8,7 +8,7 @@
   "scripts": {
     "srv-dev": "BABEL_ENV=node DEBUG=tetris:* nodemon --watch src/server --watch src/game-logic --exec \"node -r @babel/register\" src/server/main.js",
     "client-dev": "webpack-dev-server --open",
-    "srv-build": "BABEL_ENV=node babel src/server src/game-logic --out-dir dist --copy-files --ignore \"**/*.test.js\"",
+    "srv-build": "BABEL_ENV=node babel src/server --out-dir dist/server --copy-files --ignore \"**/*.test.js\" && BABEL_ENV=node babel src/game-logic --out-dir dist/game-logic --copy-files --ignore \"**/*.test.js\"",
     "client-build": "NODE_ENV=production webpack",
     "start": "DEBUG=tetris:* node dist/server/main.js",
     "test": "NODE_ENV=test mocha --require @babel/register --require test/setup.js \"test/**/*.test.js\" --reporter spec --exit",
@@ -29,6 +29,7 @@
     "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
+    "@babel/cli": "^7.29.7",
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-react": "^7.24.7",
@@ -43,16 +44,18 @@
     "jsdom": "^24.1.3",
     "mocha": "^10.7.3",
     "nodemon": "^3.1.4",
-    "nyc": "^17.1.0",
+    "nyc": "^18.0.0",
     "sinon": "^18.0.0",
     "socket.io-mock": "^1.3.2",
     "style-loader": "^4.0.0",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.1.0"
+    "webpack-dev-server": "^6.0.0"
   },
   "nyc": {
-    "extension": [".js"],
+    "extension": [
+      ".js"
+    ],
     "include": [
       "src/game-logic/**/*.js",
       "src/server/**/*.js",
@@ -67,5 +70,8 @@
     "functions": 70,
     "lines": 70,
     "branches": 50
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.5"
   }
 }
