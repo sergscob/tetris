@@ -69,7 +69,7 @@ const Lobby = () => {
           <button type="button" onClick={handleStart}>Start game</button>
         </div>
       ) : (
-        <p><b>WAITING WHEN THE HOST STARTS THE GAME... </b></p>
+        <h2>WAITING WHEN THE HOST STARTS THE GAME... </h2>
       )}
       <Leaderboard entries={leaderboard} />
     </div>

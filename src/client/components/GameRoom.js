@@ -20,7 +20,7 @@ const GameRoom = () => {
 
   return (
     <div className="game-room">
-      <h1>{`Red Tetris — ${room}`}</h1>
+      <h1>{`Red Tetris: ${room}`}</h1>
       {status === 'playing' ? <GameView /> : <Lobby />}
     </div>
   );
