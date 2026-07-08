@@ -1,4 +1,4 @@
-.PHONY: all prod prod-https back front i-back i-front i back-admin
+.PHONY: all test coverage dev clearports clear
 
 all:
 	npm i && npm run client-build && npm run srv-build && npm run start
