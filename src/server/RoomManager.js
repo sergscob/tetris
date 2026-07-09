@@ -36,8 +36,8 @@ class RoomManager {
 
   findRoomOf(playerId) {
     const entry = [...this.games.entries()].find(([, game]) => game.players.has(playerId))
-    return entry ? entry[0] : null;
+    return entry ? entry[0] : null
   }
 }
 
-export default RoomManager;
+export default RoomManager

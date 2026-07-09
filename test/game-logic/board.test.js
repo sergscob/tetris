@@ -3,59 +3,67 @@ import { createBoard, canPlacePiece, mergePieceIntoBoard, clearFullLines,  addPe
   isBoardOverflowing, isCellFree, BOARD_WIDTH, BOARD_HEIGHT } from '../../src/game-logic/board';
 import { createPiece } from '../../src/game-logic/pieces';
 
+
+
+
 describe('game-logic/board', () => {
   it('creates an empty board', () => {
-    const board = createBoard();
-    expect(board).to.have.lengthOf(BOARD_HEIGHT);
-    expect(board[0]).to.have.lengthOf(BOARD_WIDTH);
-    expect(board.every((row) => row.every((cell) => cell === null))).to.equal(true);
+    const board = createBoard()
+    expect(board).to.have.lengthOf(BOARD_HEIGHT)
+    expect(board[0]).to.have.lengthOf(BOARD_WIDTH)
+    expect(board.every((row) => row.every((cell) => cell === null))).to.equal(true)
 
-    expect(isCellFree(board, 0, -1)).to.equal(true);
-    expect(isCellFree(board, -1, 0)).to.equal(false);
-    expect(isCellFree(board, BOARD_WIDTH, 0)).to.equal(false);
-    expect(isCellFree(board, 0, BOARD_HEIGHT)).to.equal(false);
-  });
+    expect(isCellFree(board, 0, -1)).to.equal(true)
+    expect(isCellFree(board, -1, 0)).to.equal(false)
+    expect(isCellFree(board, BOARD_WIDTH, 0)).to.equal(false)
+    expect(isCellFree(board, 0, BOARD_HEIGHT)).to.equal(false)
+
+  })
+
+
 
   it('canPlacePiece is true on empty board and false quand occupied', () => {
-    const board = createBoard();
-    const piece = createPiece('O', { x: 4, y: 0 });
-    expect(canPlacePiece(board, piece)).to.equal(true);
+    const board = createBoard()
+    const piece = createPiece('O', { x: 4, y: 0 })
+    expect(canPlacePiece(board, piece)).to.equal(true)
 
-    const merged = mergePieceIntoBoard(board, piece);
-    expect(canPlacePiece(merged, piece)).to.equal(false);
-    expect(board[0][4]).to.equal(null);
-    expect(merged[0][4]).to.equal('O');
-  });
+    const merged = mergePieceIntoBoard(board, piece)
+    expect(canPlacePiece(merged, piece)).to.equal(false)
+    expect(board[0][4]).to.equal(null)
+    expect(merged[0][4]).to.equal('O')
+  })
+
 
   it('clearFullLines remove complete rows and place empty rows on top', () => {
-    const board = createBoard(4, 3);
-    board[2] = ['I', 'I', 'I', 'I'];
-    const { board: next, linesCleared } = clearFullLines(board);
-    expect(linesCleared).to.equal(1);
-    expect(next).to.have.lengthOf(3);
-    expect(next[0].every((cell) => cell === null)).to.equal(true);
+    const board = createBoard(4, 3)
+    board[2] = ['I', 'I', 'I', 'I']
+    const { board: next, linesCleared } = clearFullLines(board)
+    expect(linesCleared).to.equal(1)
+    expect(next).to.have.lengthOf(3)
+    expect(next[0].every((cell) => cell === null)).to.equal(true)
 
-    const emptyBoard = createBoard(4, 3);
-    const { board: unchanged, linesCleared: none } = clearFullLines(emptyBoard);
-    expect(none).to.equal(0);
-    expect(unchanged).to.deep.equal(emptyBoard);
-  });
+    const emptyBoard = createBoard(4, 3)
+    const { board: unchanged, linesCleared: none } = clearFullLines(emptyBoard)
+    expect(none).to.equal(0)
+    expect(unchanged).to.deep.equal(emptyBoard)
+  })
+
 
   it('addPenaltyLines pushes indestructible rows to the bottom', () => {
-    const board = createBoard(4, 3);
-    const withPenalty = addPenaltyLines(board, 1);
-    expect(withPenalty).to.have.lengthOf(3);
-    expect(withPenalty[2].every((cell) => cell === 'P')).to.equal(true);
+    const board = createBoard(4, 3)
+    const withPenalty = addPenaltyLines(board, 1)
+    expect(withPenalty).to.have.lengthOf(3)
+    expect(withPenalty[2].every((cell) => cell === 'P')).to.equal(true)
 
-    expect(addPenaltyLines(board, 0)).to.equal(board);
-    expect(addPenaltyLines(board, -3)).to.equal(board);
-  });
+    expect(addPenaltyLines(board, 0)).to.equal(board)
+    expect(addPenaltyLines(board, -3)).to.equal(board)
+  })
 
 
   it('isBoardOverflowing detect a blocked top row', () => {
-    const board = createBoard(4, 3);
-    expect(isBoardOverflowing(board)).to.equal(false);
-    board[0][0] = 'I';
-    expect(isBoardOverflowing(board)).to.equal(true);
+    const board = createBoard(4, 3)
+    expect(isBoardOverflowing(board)).to.equal(false)
+    board[0][0] = 'I'
+    expect(isBoardOverflowing(board)).to.equal(true)
   });
 });

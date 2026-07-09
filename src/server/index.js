@@ -76,11 +76,12 @@ const emitError = (socket, error) => {
 };
 
 export const createServer = (params, options = {}) => new Promise(resolve => {
-  const scoreStore = options.scoreStore || new ScoreStore();
-  const app = express();
-  const buildDir = path.join(__dirname, '..', '..', 'build');
+  const scoreStore = options.scoreStore || new ScoreStore()
+  const app = express()
+  const buildDir = path.join(__dirname, '..', '..', 'build')
   app.use(express.static(buildDir));
-  app.get('*', (req, res) => res.sendFile(path.join(buildDir, 'index.html')));
+  app.get('*', (req, res) => res.sendFile(path.join(buildDir, 'index.html')))
+
 
   const httpServer = http.createServer(app)
   const io = new Server(httpServer)
@@ -96,8 +97,8 @@ export const createServer = (params, options = {}) => new Promise(resolve => {
         if (isNewGame) 
           subscribeGame(io, room, game, scoreStore);
 
-        currentRoom = room;
-        socket.join(room);
+        currentRoom = room
+        socket.join(room)
         io.to(room).emit('room:state', buildRoomState(game))
         socket.emit('leaderboard:top', scoreStore.top())
       } catch (error) {

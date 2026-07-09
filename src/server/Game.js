@@ -33,20 +33,20 @@ class Game extends EventEmitter {
   }
 
   addPlayer(id, name) {
-    if (this.players.size >= MAX_PAYERS) {
+    if (this.players.size >= MAX_PAYERS) 
       throw new RoomStateError(`Room "${this.room}" is full, cannot join`);
-    }
-    if (this.status !== 'waiting') {
-      throw new RoomStateError(`Room "${this.room}" already started, cannot join until next round`);
-    }
+    
+    if (this.status !== 'waiting') 
+      throw new RoomStateError(`Room "${this.room}" already started, cannot join until next round`)
+    
     const player = new Player(id, name);
     if (this.players.size === 0) {
-      player.isHost = true;
-      this.hostId = id;
+      player.isHost = true
+      this.hostId = id
     }
-    this.players.set(id, player);
-    this.emit('state');
-    return player;
+    this.players.set(id, player)
+    this.emit('state')
+    return player
   }
 
   removePlayer(id) {
@@ -83,19 +83,19 @@ class Game extends EventEmitter {
     this.showGhost = modeOverrides.showGhost ?? this.showGhost,
     this.gravityMultiplier = modeOverrides.gravityMultiplier || this.gravityMultiplier
     this.acceleration = modeOverrides.acceleration ?? this.acceleration
-    this.seed = this.forcedSeed !== undefined ? this.forcedSeed : createSeed();
-    this.pieceCache = generatePieceSequence(this.seed, PIECE_TO_GENERATE);
-    this.status = 'playing';
-    this.winnerId = null;
+    this.seed = this.forcedSeed !== undefined ? this.forcedSeed : createSeed()
+    this.pieceCache = generatePieceSequence(this.seed, PIECE_TO_GENERATE)
+    this.status = 'playing'
+    this.winnerId = null
     this.players.forEach((player) => {
       player.reset();
-      this.giveNextPiece(player);
-    });
+      this.giveNextPiece(player)
+    })
     
-    const intervalMs = DEFAULT_TICK_MS / this.gravityMultiplier;
-    this.timer = setInterval(() => this.tick(), intervalMs);
-    this.emit('started', { seed: this.seed });
-    this.emit('state');
+    const intervalMs = DEFAULT_TICK_MS / this.gravityMultiplier
+    this.timer = setInterval(() => this.tick(), intervalMs)
+    this.emit('started', { seed: this.seed })
+    this.emit('state')
   }
 
   stop() {
@@ -112,19 +112,19 @@ class Game extends EventEmitter {
 
   giveNextPiece(player) {
     const type = this.getPieceTypeAt(player.pieceIndex);
-    player.pieceIndex += 1;
-    const piece = new Piece(type);
+    player.pieceIndex += 1
+    const piece = new Piece(type)
     if (!canPlacePiece(player.board, piece.state)) {
       this.killPlayer(player);
-      return;
+      return
     }
-    player.piece = piece;
-    player.wasResting = false;
+    player.piece = piece
+    player.wasResting = false
   }
 
   killPlayer(player) {
-    player.alive = false;
-    player.piece = null;
+    player.alive = false
+    player.piece = null
     this.checkWinCondition();
   }
 

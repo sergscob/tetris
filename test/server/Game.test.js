@@ -33,7 +33,7 @@ describe('server/Game', () => {
 
     game.removePlayer('p2');
     expect(game.players.size).to.equal(0);
-  });
+  })
 
   it('clearing 2 lines scores them and sends 1 penalty line to opponents', () => {
     const game = new Game('room1', { seed: 1 });
@@ -56,21 +56,21 @@ describe('server/Game', () => {
     }
     p1.piece = new Piece('O', { x: 4, y: 18 });
 
-    game.tick();
-    game.tick();
+    game.tick()
+    game.tick()
 
-    expect(p1.score).to.equal(300);
-    expect(p2.board[19].every((cell) => cell === 'P')).to.equal(true);
+    expect(p1.score).to.equal(300)
+    expect(p2.board[19].every((cell) => cell === 'P')).to.equal(true)
   });
 
   it('move/rotate/softDrop are no-ops before the game starts or when player is dead', () => {
-    const game = new Game('room1', { seed: 1 });
-    game.addPlayer('p1', 'alice');
-    expect(() => game.move('p1', 'left')).to.not.throw();
-    expect(() => game.rotate('p1')).to.not.throw();
-    expect(() => game.softDrop('p1')).to.not.throw();
-    expect(() => game.hardDrop('p1')).to.not.throw();
-  });
+    const game = new Game('room1', { seed: 1 })
+    game.addPlayer('p1', 'alice')
+    expect(() => game.move('p1', 'left')).to.not.throw()
+    expect(() => game.rotate('p1')).to.not.throw()
+    expect(() => game.softDrop('p1')).to.not.throw()
+    expect(() => game.hardDrop('p1')).to.not.throw()
+  })
 
 
   it('allows the host to restart a new round once the previous one is over', () => {
@@ -86,18 +86,19 @@ describe('server/Game', () => {
     expect(game.players.get('p2').alive).to.equal(true);
   });
 
+
   it('kills player when board has no room for next piece', () => {
-    const game = new Game('room1', { seed: 1 });
-    game.addPlayer('p1', 'alice');
-    startWithoutTimer(game, 'p1');
-    const player = game.players.get('p1');
-    player.board = player.board.map((row) => row.map(() => 'X'));
+    const game = new Game('room1', { seed: 1 })
+    game.addPlayer('p1', 'alice')
+    startWithoutTimer(game, 'p1')
+    const player = game.players.get('p1')
+    player.board = player.board.map((row) => row.map(() => 'X'))
 
-    game.giveNextPiece(player);
+    game.giveNextPiece(player)
 
-    expect(player.alive).to.equal(false);
-    expect(player.piece).to.equal(null);
-    expect(game.status).to.equal('waiting');
-    expect(game.winnerId).to.equal(null);
+    expect(player.alive).to.equal(false)
+    expect(player.piece).to.equal(null)
+    expect(game.status).to.equal('waiting')
+    expect(game.winnerId).to.equal(null)
   });
 });

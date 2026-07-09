@@ -13,14 +13,16 @@ describe('game-logic/pieces', () => {
     expect(piece.y).to.be.below(0);
   });
 
+  
   it('getPieceCells return 4 cells for every type at every rotation', () => {
+    
     PIECE_TYPES.forEach((type) => {
       [0, 1, 2, 3].forEach((rotation) => {
         const cells = getPieceCells({ type, rotation, x: 0, y: 0 });
         expect(cells).to.have.lengthOf(4);
-      });
-    });
-  });
+      })
+    })
+  })
 
   it('rotatePiece not change input piece', () => {
     const piece = createPiece('S');

@@ -1,5 +1,7 @@
 import * as server from '../../src/server/index';
 
+
+
 export const createInMemoryScoreStore = () => {
   const scores = []
   return {

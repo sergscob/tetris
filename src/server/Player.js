@@ -1,4 +1,4 @@
-import { createBoard } from '../game-logic/board';
+import { createBoard } from '../game-logic/board'
 
 class Player {
   constructor(id, name) {
@@ -23,4 +23,4 @@ class Player {
   }
 }
 
-export default Player;
+export default Player

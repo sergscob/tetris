@@ -33,4 +33,4 @@ class ScoreStore {
   }
 }
 
-export default ScoreStore;
+export default ScoreStore
