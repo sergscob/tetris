@@ -53,8 +53,8 @@ const subscribeGame = (io, room, game, scoreStore) => {
     io.to(room).emit('room:state', buildRoomState(game));
   });
 
-  game.on('started', ({ seed }) => {
-    io.to(room).emit('game:started', { seed });
+  game.on('started', () => {
+    io.to(room).emit('game:started');
   });
 
   game.on('tick', () => {
@@ -64,7 +64,7 @@ const subscribeGame = (io, room, game, scoreStore) => {
   });
 
   game.on('gameover', ({ winnerId }) => {
-    game.players.forEach((player) => scoreStore.record(player.name, player.score));
+    game.players.forEach(player => scoreStore.record(player.name, player.score));
     io.to(room).emit('game:over', { winnerId });
     io.to(room).emit('leaderboard:top', scoreStore.top());
   });

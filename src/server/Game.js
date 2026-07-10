@@ -95,7 +95,7 @@ class Game extends EventEmitter {
     
     const intervalMs = DEFAULT_TICK_MS / this.gravityMultiplier
     this.timer = setInterval(() => this.tick(), intervalMs)
-    this.emit('started', { seed: this.seed })
+    this.emit('started')
     this.emit('state')
   }
 

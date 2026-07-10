@@ -23,7 +23,7 @@ describe('client/actions', () => {
     expect(softDrop()).to.deep.equal({ type: 'game/softDrop' })
     expect(hardDrop()).to.deep.equal({ type: 'game/hardDrop' })
 
-    expect(gameStarted(42)).to.deep.equal({ type: 'game/started', seed: 42 })
+    expect(gameStarted()).to.deep.equal({ type: 'game/started' })
     expect(gameTick({ score: 1 })).to.deep.equal({ type: 'game/tick', payload: { score: 1 } })
     expect(gameOver('p1')).to.deep.equal({ type: 'game/over', winnerId: 'p1' })
   })

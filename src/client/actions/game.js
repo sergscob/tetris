@@ -12,6 +12,6 @@ export const rotate = () => ({ type: ROTATE });
 export const softDrop = () => ({ type: SOFT_DROP });
 export const hardDrop = () => ({ type: HARD_DROP });
 
-export const gameStarted = seed => ({ type: GAME_STARTED, seed });
+export const gameStarted = () => ({ type: GAME_STARTED });
 export const gameTick = payload => ({ type: GAME_TICK, payload });
 export const gameOver = winnerId => ({ type: GAME_OVER, winnerId });

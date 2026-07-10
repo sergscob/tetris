@@ -36,8 +36,7 @@ describe('client/reducers/room', () => {
 describe('client/reducers/game', () => {
   it('reset to fresh state when the game starts', () => {
     const previous = { score: 999, opponents: [{ id: 'p2' }] }
-    const state = game(previous, gameStarted(7))
-    expect(state.seed).to.equal(7)
+    const state = game(previous, gameStarted())
     expect(state.score).to.equal(0)
     expect(state.opponents).to.deep.equal([])
   })

@@ -17,7 +17,7 @@ const OUT_EVENTS =
 const createSocketMiddleware = socket => store => {
   socket.on('connect', () => store.dispatch(selfConnected(socket.id)));
   socket.on('room:state', payload => store.dispatch(roomStateReceived(payload)));
-  socket.on('game:started', ({ seed }) => store.dispatch(gameStarted(seed)));
+  socket.on('game:started', () => store.dispatch(gameStarted()));
   socket.on('game:tick', payload => store.dispatch(gameTick(payload)));
   socket.on('game:over', ({ winnerId }) => store.dispatch(gameOver(winnerId)));
   socket.on('error', ({ message }) => store.dispatch(socketErrorReceived(message)));

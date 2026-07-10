@@ -1,7 +1,6 @@
 import { GAME_STARTED, GAME_TICK, GAME_OVER } from '../actions/game';
 
 const initialState = {
-  seed: null,
   board: null,
   piece: null,
   hidePiece: false,
@@ -16,7 +15,7 @@ const initialState = {
 const game = (state = initialState, action) => {
   switch (action.type) {
     case GAME_STARTED:
-      return { ...initialState, seed: action.seed, lastWinnerId: null };
+      return { ...initialState, lastWinnerId: null };
     case GAME_TICK:
       return { ...state, ...action.payload };
     case GAME_OVER:
