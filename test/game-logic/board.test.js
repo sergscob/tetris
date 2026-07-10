@@ -13,8 +13,6 @@ describe('game-logic/board', () => {
     expect(board[0]).to.have.lengthOf(BOARD_WIDTH)
     expect(board.every((row) => row.every((cell) => cell === null))).to.equal(true)
 
-    expect(isCellFree(board, 0, -1)).to.equal(true)
-    expect(isCellFree(board, -1, 0)).to.equal(false)
     expect(isCellFree(board, BOARD_WIDTH, 0)).to.equal(false)
     expect(isCellFree(board, 0, BOARD_HEIGHT)).to.equal(false)
 

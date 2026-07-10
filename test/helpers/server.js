@@ -1,4 +1,4 @@
-import * as server from '../../src/server/index';
+import * as server from '../../src/server/server';
 
 
 
