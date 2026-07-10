@@ -1,9 +1,11 @@
+
 import { JOIN_ROOM, START_GAME, roomStateReceived, socketErrorReceived, selfConnected } from '../actions/room';
 import { MOVE, ROTATE, SOFT_DROP, HARD_DROP, gameStarted, gameTick, gameOver } from '../actions/game';
 import { leaderboardReceived } from '../actions/leaderboard';
 
 
-const OUT_EVENTS = {
+const OUT_EVENTS = 
+{
   [JOIN_ROOM]: action => ['room:join', { room: action.room, playerName: action.playerName, mode: action.mode }],
   [START_GAME]: action => ['game:start', { mode: action.mode }],
   [MOVE]: action => ['input:move', { dir: action.dir }],
@@ -12,7 +14,7 @@ const OUT_EVENTS = {
   [HARD_DROP]: () => ['input:hardDrop', undefined],
 };
 
-const createSocketMiddleware = (socket) => (store) => {
+const createSocketMiddleware = socket => store => {
   socket.on('connect', () => store.dispatch(selfConnected(socket.id)));
   socket.on('room:state', payload => store.dispatch(roomStateReceived(payload)));
   socket.on('game:started', ({ seed }) => store.dispatch(gameStarted(seed)));
@@ -21,7 +23,7 @@ const createSocketMiddleware = (socket) => (store) => {
   socket.on('error', ({ message }) => store.dispatch(socketErrorReceived(message)));
   socket.on('leaderboard:top', (entries) => store.dispatch(leaderboardReceived(entries)));
 
-  return (next) => (action) => {
+  return next => (action) => {
     const toEvent = OUT_EVENTS[action.type]
     if (toEvent) {
       const [event, payload] = toEvent(action)

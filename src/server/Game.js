@@ -1,23 +1,23 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'events'
 import { canPlacePiece, mergePieceIntoBoard, clearFullLines, addPenaltyLines, isBoardOverflowing} from '../game-logic/board'
-import { canMove } from '../game-logic/collision';
-import { generatePieceSequence, createSeed } from '../game-logic/rng';
-import { RoomStateError } from '../game-logic/errors';
-import Player from './Player';
-import Piece from './Piece';
+import { canMove } from '../game-logic/collision'
+import { generatePieceSequence, createSeed } from '../game-logic/rng'
+import { RoomStateError } from '../game-logic/errors'
+import Player from './Player'
+import Piece from './Piece'
 
-const SCORE_TABLE = { 1: 100, 2: 300, 3: 500, 4: 800 };
-
-const PIECE_TO_GENERATE = 50;
-const DEFAULT_TICK_MS = 800;
-const MAX_PAYERS = 5;
+const SCORE_TABLE = { 1: 100, 2: 300, 3: 500, 4: 800 }
+const PIECE_TO_GENERATE = 50
+const DEFAULT_TICK_MS = 800
+const MAX_PAYERS = 5
 
 class Game extends EventEmitter {
+
   constructor(room, options = {}) {
-    super();
-    this.room = room;
+    super()
+    this.room = room
     this.players = new Map();
-    this.hostId = null;
+    this.hostId = null
     this.status = 'waiting';
     this.seed = null;
     this.winnerId = null;
@@ -27,11 +27,11 @@ class Game extends EventEmitter {
     this.gravityMultiplier = options.gravityMultiplier || 1
     this.showGhost = Boolean(options.showGhost)
     this.acceleration = Boolean(options.acceleration)
-    this.tickCount = 0;
+    this.tickCount = 0
     // for tests
-    this.forcedSeed = options.seed;
+    this.forcedSeed = options.seed
   }
-
+  
   addPlayer(id, name) {
     if (this.players.size >= MAX_PAYERS) 
       throw new RoomStateError(`Room "${this.room}" is full, cannot join`);
@@ -52,6 +52,7 @@ class Game extends EventEmitter {
   removePlayer(id) {
     if (!this.players.has(id)) 
       return
+
     const wasHost = this.hostId === id
     this.players.delete(id)
 
@@ -72,13 +73,13 @@ class Game extends EventEmitter {
   }
 
   start(requesterId, modeOverrides = {}) {
-    if (requesterId !== this.hostId) {
+    if (requesterId !== this.hostId) 
       throw new RoomStateError('Only the host can start the game')
-    }
-    if (this.status !== 'waiting') {
-      throw new RoomStateError(`Room "${this.room}" already started`)
-    }
     
+    if (this.status !== 'waiting') 
+      throw new RoomStateError(`Room "${this.room}" already started`)
+    
+   
     this.invisible = modeOverrides.invisible ?? this.invisible,
     this.showGhost = modeOverrides.showGhost ?? this.showGhost,
     this.gravityMultiplier = modeOverrides.gravityMultiplier || this.gravityMultiplier
@@ -87,7 +88,7 @@ class Game extends EventEmitter {
     this.pieceCache = generatePieceSequence(this.seed, PIECE_TO_GENERATE)
     this.status = 'playing'
     this.winnerId = null
-    this.players.forEach((player) => {
+    this.players.forEach(player => {
       player.reset();
       this.giveNextPiece(player)
     })
@@ -143,9 +144,9 @@ class Game extends EventEmitter {
 
   endGame(winnerId) {
     if (this.timer) 
-      clearInterval(this.timer);
-    this.status = 'waiting';
-    this.winnerId = winnerId;
+      clearInterval(this.timer)
+    this.status = 'waiting'
+    this.winnerId = winnerId
     this.stop();
     this.emit('gameover', { winnerId });
     this.emit('state');

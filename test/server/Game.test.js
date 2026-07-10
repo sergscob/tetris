@@ -7,7 +7,9 @@ import { RoomStateError } from '../../src/game-logic/errors';
 const startWithoutTimer = (game, hostId, mode) => {
   game.start(hostId, mode);
   game.stop();
-};
+}
+
+
 
 describe('server/Game', () => {
 
@@ -35,6 +37,7 @@ describe('server/Game', () => {
     expect(game.players.size).to.equal(0);
   })
 
+
   it('clearing 2 lines scores them and sends 1 penalty line to opponents', () => {
     const game = new Game('room1', { seed: 1 });
     game.addPlayer('p1', 'alice');
@@ -61,7 +64,8 @@ describe('server/Game', () => {
 
     expect(p1.score).to.equal(300)
     expect(p2.board[19].every((cell) => cell === 'P')).to.equal(true)
-  });
+  })
+
 
   it('move/rotate/softDrop are no-ops before the game starts or when player is dead', () => {
     const game = new Game('room1', { seed: 1 })
